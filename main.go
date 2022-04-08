@@ -13,6 +13,7 @@ import (
 
 var privateKeyFlag = flag.String("privateKey", "", "")
 var hostFlag = flag.String("host", "", "")
+var userFlag = flag.String("user", "", "")
 
 func main() {
 	flag.Parse()
@@ -28,7 +29,7 @@ func main() {
 	}
 
 	config := &ssh.ClientConfig{
-		User: "yqm",
+		User: *userFlag,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(signer),
 		},
@@ -56,7 +57,7 @@ func main() {
 		log.Fatal("Failed to create SOCKS5 server: ", err)
 	}
 
-	if err := server.ListenAndServe("tcp", "127.0.0.1:7788"); err != nil {
+	if err := server.ListenAndServe("tcp", "0.0.0.0:7788"); err != nil {
 		panic(err)
 	}
 }
